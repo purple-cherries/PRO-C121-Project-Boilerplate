@@ -14,7 +14,7 @@ camera.set(4 , 480)
 mountain = cv2.imread('mount everest.jpg')
 
 # resizing the mountain image as 640 X 480
-
+mountain = cv2.resize(mountain, (640,480))
 
 while True:
 
@@ -35,15 +35,16 @@ while True:
         upper_bound = np.array([])
 
         # thresholding image
+        mask = cv2.inRange(frame_rgb, lower_bound, upper_bound)
 
         # inverting the mask
-
+        mask = cv2.bitwise_not(mask)
         # bitwise and operation to extract foreground / person
-
+        person = cv2. bitwise_and(frame, frame, mask = mask)
         # final image
-
+        final_img = np.where(person == 0, mountain, person)
         # show it
-        cv2.imshow('frame' , frame)
+        cv2.imshow('frame' , final_img)
 
         # wait of 1ms before displaying another frame
         code = cv2.waitKey(1)
